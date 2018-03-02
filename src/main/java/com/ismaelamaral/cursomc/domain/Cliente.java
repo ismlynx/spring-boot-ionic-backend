@@ -1,5 +1,6 @@
 package com.ismaelamaral.cursomc.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ismaelamaral.cursomc.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente {
+public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,6 +38,9 @@ public class Cliente {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
+	@OneToMany(mappedBy="cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
+	
 	public Cliente () {
 		
 	}
@@ -106,6 +110,14 @@ public class Cliente {
 		this.telefones = telefones;
 	}
 
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,6 +142,5 @@ public class Cliente {
 			return false;
 		return true;
 	}
-	
 	
 }
