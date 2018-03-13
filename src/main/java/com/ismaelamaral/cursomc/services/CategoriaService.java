@@ -1,11 +1,12 @@
 package com.ismaelamaral.cursomc.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ismaelamaral.cursomc.domain.Categoria;
 import com.ismaelamaral.cursomc.repositories.CategoriaRepository;
+import com.ismaelamaral.cursomc.services.exceptions.DataIntegrityException;
 import com.ismaelamaral.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -36,5 +37,17 @@ public class CategoriaService {
 		
 		find(obj.getId());
 		return repo.save(obj);
+	}
+	
+	public void delete(Integer id) {
+		
+		find(id);
+		try {
+			repo.delete(id);			
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possível excluir uma categoria que possui produtos!");
+		}
+
 	}
 }
